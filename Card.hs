@@ -6,9 +6,8 @@ data Suit =  Spades  | Hearts  | Diamonds  | Clubs
    deriving (Show,Eq,Ord,Enum, Bounded)
 
 instance Read Suit where
- readsPrec _ (c:rest) = case charToSuit (toUpper c) of
-  Just face -> [(face, rest)]
-  Nothing   -> []
+ readsPrec _ (c:rest) = maybe [] (\f -> [(f, rest)]) msuit
+  where msuit = charToSuit (toUpper c)
  readsPrec _ _ = []
 
 charToSuit :: Char -> Maybe Suit
@@ -27,9 +26,8 @@ data Face = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack 
    deriving (Show,Eq,Ord,Enum, Bounded)
 
 instance Read Face where
-  readsPrec _ (c:rest) = case charToFace (toUpper c) of
-    Just face -> [(face, rest)]
-    Nothing   -> []
+  readsPrec _ (c:rest) = maybe [] (\c -> [(c,rest)]) mface
+   where mface = charToFace (toUpper c)
   readsPrec _ _ = []
 
 charToFace :: Char -> Maybe Face
@@ -46,9 +44,8 @@ getFace (Card  myFace mySuit) = myFace
 data Card = Card Face Suit deriving (Show, Eq, Ord)
 
 instance Read Card where
- readsPrec _ (f:s:rest) = case ((fmap Card (charToFace f)) <*> (charToSuit s)) of
-  Just card -> [(card,rest)]
-  Nothing   -> []
+ readsPrec _ (f:s:rest) = maybe [] (\c -> [(c,rest)]) mcard
+  where mcard = ((fmap Card (charToFace f)) <*> (charToSuit s))
  readsPrec _ _ = []
 
 cardreader = (read :: String -> Card)
