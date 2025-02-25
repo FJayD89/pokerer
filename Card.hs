@@ -54,5 +54,5 @@ instance Read Card where
 cardreader = (read :: String -> Card)
 
 card_tuple :: (Face, Suit) -> Card
-card_tuple (f,s) = Card f s
+card_tuple = uncurry $ Card
 
