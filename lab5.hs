@@ -16,7 +16,4 @@ handPair	= (Card Four Clubs) : (tail $ map card_tuple (zip fs ss))
 ss = [Spades, Spades, Diamonds, Clubs, Spades]
 fs = [Five, Three, Four, Seven, Six]
 
-main = do
- str <- getLine
- putStrLn $ show $ mhand $ (map cardreader) $ words $ str
- main
+main = interact $ show . mhand . (map cardreader) . words
